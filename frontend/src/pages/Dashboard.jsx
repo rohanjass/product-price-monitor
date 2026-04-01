@@ -78,7 +78,7 @@ const Dashboard = () => {
         </button>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <StatCard 
           title="Total Tracked Products" 
           value={analytics.total_products} 
@@ -91,39 +91,9 @@ const Dashboard = () => {
           icon={<BarChart2 className="w-6 h-6 text-indigo-600" />} 
           subtitle="Distinct groupings"
         />
-        <StatCard 
-          title="Active Sources" 
-          value={analytics.by_source.length} 
-          icon={<PieChart className="w-6 h-6 text-indigo-600" />} 
-          subtitle="Stores & Websites"
-        />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Source Analytics */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <PieChart className="w-5 h-5 text-gray-500" />
-            Products by Source
-          </h2>
-          <div className="space-y-4">
-            {analytics.by_source.map((item, idx) => (
-              <div key={idx} className="flex flex-col">
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="font-medium text-gray-700">{item.source}</span>
-                  <span className="text-gray-500">{item.total_products} items</span>
-                </div>
-                <div className="w-full bg-gray-100 rounded-full h-2">
-                  <div 
-                    className="bg-indigo-600 h-2 rounded-full" 
-                    style={{ width: `${Math.max(5, (item.total_products / analytics.total_products) * 100)}%` }}
-                  ></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
+      <div className="grid grid-cols-1 gap-6">
         {/* Category Analytics */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
           <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">

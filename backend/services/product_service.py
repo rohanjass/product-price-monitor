@@ -1,5 +1,7 @@
 import json
 import os
+import random
+from datetime import datetime, timezone, timedelta
 from sqlalchemy.orm import Session
 import models
 
@@ -68,8 +70,16 @@ def load_data_from_json(db: Session):
                 db.commit()
                 db.refresh(new_product)
                 
-                new_history = models.PriceHistory(product_id=new_product.id, price=price_val)
-                db.add(new_history)
+                # Mock historical price points (10 days back)
+                base_time = datetime.now(timezone.utc)
+                for i in range(10, 0, -1):
+                    factor = 1 + random.uniform(-0.15, 0.15)
+                    hist_price = max(0.01, round(price_val * factor, 2))
+                    hist_time = base_time - timedelta(days=i)
+                    db.add(models.PriceHistory(product_id=new_product.id, price=hist_price, timestamp=hist_time))
+                
+                # Current price point
+                db.add(models.PriceHistory(product_id=new_product.id, price=price_val, timestamp=base_time))
                 db.commit()
         return True
     except Exception as e:

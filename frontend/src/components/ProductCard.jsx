@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ExternalLink, Tag } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const ProductCard = ({ product }) => {
   const { id, name, brand, price, image, source, condition } = product;
@@ -34,7 +35,7 @@ const ProductCard = ({ product }) => {
       animate={{ backgroundColor: flashColor }}
       transition={{ backgroundColor: { duration: 0.5 } }}
     >
-      <div className="relative aspect-[4/3] bg-gray-50 flex-shrink-0">
+      <Link to={`/products/${id}`} className="relative aspect-[4/3] bg-gray-50 flex-shrink-0 block">
         {image ? (
           <img 
             src={image} 
@@ -50,20 +51,22 @@ const ProductCard = ({ product }) => {
           </div>
         )}
         <div className="absolute top-2 right-2 flex gap-2">
-          <span className="bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-semibold text-gray-700 shadow-sm border border-gray-100/50">
+          <span className="bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-semibold text-gray-700 shadow-sm border border-gray-100/50" onClick={(e) => e.preventDefault()}>
             {(() => {
               try { return new URL(source).hostname.replace('www.', ''); }
               catch { return source; }
             })()}
           </span>
         </div>
-      </div>
+      </Link>
       
       <div className="p-4 flex flex-col flex-1">
         <div className="flex items-start justify-between gap-2 mb-2">
-          <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 leading-tight" title={name}>
-            {name}
-          </h3>
+          <Link to={`/products/${id}`} className="hover:text-indigo-600 transition-colors">
+            <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 leading-tight" title={name}>
+              {name}
+            </h3>
+          </Link>
         </div>
         
         <div className="flex items-center gap-2 mb-3 mt-auto">
@@ -76,13 +79,13 @@ const ProductCard = ({ product }) => {
         </div>
         
         <div className="flex items-end justify-between mt-auto pt-4 border-t border-gray-50">
-          <div>
+          <Link to={`/products/${id}`} className="block group">
             <p className="text-xs text-gray-500 mb-0.5">{condition}</p>
-            <p className="text-lg font-bold text-gray-900">
+            <p className="text-lg font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">
               ${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
-          </div>
-          <a href={source} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-800 p-2 rounded-full hover:bg-indigo-50 transition-colors" title="View Details">
+          </Link>
+          <a href={source} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-800 p-2 rounded-full hover:bg-indigo-50 transition-colors" title="View Source">
             <ExternalLink className="w-4 h-4" />
           </a>
         </div>
