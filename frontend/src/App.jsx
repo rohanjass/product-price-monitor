@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import Products from './pages/Products';
@@ -18,6 +19,7 @@ function App() {
             <Route path="/products/:id" element={<ProductDetail />} />
           </Routes>
         </main>
+        <Toaster position="bottom-right" />
       </div>
     </Router>
   );
