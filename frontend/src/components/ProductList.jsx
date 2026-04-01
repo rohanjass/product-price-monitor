@@ -5,9 +5,6 @@ import { toast } from 'react-hot-toast';
 import { normalizeProducts } from '../utils/normalize';
 import ProductCard from './ProductCard';
 
-// Load directly from combined JSON
-import rawData from '../../../data/combined.json';
-
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,15 +19,26 @@ const ProductList = () => {
     const loadData = async () => {
       try {
         setLoading(true);
-        // In a real app, this would be a fetch call
-        await new Promise(resolve => setTimeout(resolve, 600)); 
+        const response = await fetch('http://localhost:8000/products', {
+          headers: {
+            'X-API-Key': 'dev-secret-key'
+          }
+        });
+        if (!response.ok) throw new Error("Failed to load data from server");
         
-        if (!rawData) throw new Error("Failed to load data");
-        
-        const normalizedData = normalizeProducts(rawData);
-        setProducts(normalizedData);
+        const data = await response.json();
+        const mappedData = data.map(p => ({
+            id: p.id,
+            name: p.name,
+            brand: p.brand,
+            price: p.latest_price || 0,
+            image: p.image_url || '',
+            source: p.source || 'Unknown',
+            condition: p.condition || 'Not specified'
+        }));
+        setProducts(mappedData);
       } catch (err) {
-        setError(err.message || 'Error parsing product data');
+        setError(err.message || 'Error loading product data');
       } finally {
         setLoading(false);
       }

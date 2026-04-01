@@ -51,7 +51,10 @@ const ProductCard = ({ product }) => {
         )}
         <div className="absolute top-2 right-2 flex gap-2">
           <span className="bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-xs font-semibold text-gray-700 shadow-sm border border-gray-100/50">
-            {source}
+            {(() => {
+              try { return new URL(source).hostname.replace('www.', ''); }
+              catch { return source; }
+            })()}
           </span>
         </div>
       </div>
@@ -79,9 +82,9 @@ const ProductCard = ({ product }) => {
               ${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </p>
           </div>
-          <button className="text-indigo-600 hover:text-indigo-800 p-2 rounded-full hover:bg-indigo-50 transition-colors" title="View Details">
+          <a href={source} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-800 p-2 rounded-full hover:bg-indigo-50 transition-colors" title="View Details">
             <ExternalLink className="w-4 h-4" />
-          </button>
+          </a>
         </div>
       </div>
     </motion.div>
